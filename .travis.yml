@@ -9,23 +9,24 @@ env:
     - CXX=g++-4.8
   matrix:
     - USE_SENTRY=1
-#    - USE_SENTRY=0
+
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
+    - g++-4.8
+
 before_install:
   - docker pull getsentry/sentry-cli
 
 script:
   - npm install
-  - npm run build:dll
+  - NODE_ENV=production npm run build:dll
   - npm run build
 
 before_deploy:
-  - bash deploy/sentry_release.sh
+#  - bash deploy/sentry_release.sh
   - find dist/ -type f -name "*.map" -delete
   - zip -r dist.zip dist
 
@@ -33,9 +34,9 @@ deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: I+BjkiPd+7XnMo1qWFhyz2xqElBLlGuCx1ZamvEa61zk4HPAnfWDPvpxXWihLdE4WDIkrOTRQ6Nh6GlVz+2uFugtdAlrxEWjU3bhadf5hAPNL2faNd52CN2qRNOuaWZmIkY4KUDmKoxvcFVQCKqMCxpghlNT7IJLwaC5wjogMeQKERXSa4rXl/ZGHdZzpkPo8SIEIy7hwQcHDl0ckm3t8wlXe6/xCRR2YoI3enZE15oJ15PChEcYbI6kUHNg3iIAddAAykqU0PnBtGSaPkl2JU90f4Rs62wW626wXyBs39ZU2rSbooyKF7OgFtS7KeTbYxyINBta8JH45plE/HVB3U3wy/8dBneZYr6ySGtSZSV10ortW59Al6Pifyo1na6tgkXSrckUOh1HFSiOsN6k46RXo6T1L1w1P8cUCJ2WYJksHJqBXnQmKbol9x3Gz6fQHR6yA5ToczKmg2ow549Q3g3oRb6RjRzXNkYu9sAZ2mhQ1fIjm7GkYPQvHzze+qwBxeX/ysFwIUNjUnK6u6EZunShz6fF9NEsDxzfUXPDOfB28MmxGkIi6TuT21F8tKfCG0C0CqLWBBve2agU9gutvIA1aY9i5K0YnlXPah1NYYzDPlk1RepWzJrq9VzGz3HxwY++cm6vR/7o9V+3WVpMIWHjnYwDTpK7pfm3VYbiLlg=
+    secure: rV4MOUd391Qo2g71qPmppbucSkbeOUJqMcgD1XbATsncn9bLE9pvlb6RcsMQQoKo6UFuzbyn+N+COpKxywgr5OD5liMC6jGhBLv/s52R5aOzQGqPFGGBgmPMB/amzJNdj7FxtmrztU8a1KlDlaoeVAe2J78sZBfh9Szpvy7+pWIuXBWaod+mpNwZvQPMoWNgy/U0hgetgaARQUYFntbtG59e3LVlI43kCTPcU+4I9ZKXA3fWWHdDui3G/cfOTnqu5/btn7MVo4S4nnc1Vry5vz3MAQv/xkpZk7UOWe+ctcLC9TSHigGFkCRcd5qxRbk5n8g8wOu1w/waZ5Q9MvzG9xbVkQ9xr728BUTj3o7Ds+u/4hnEKCaFaoKqMaPeCRzhx9t3euQF66JrUO7GqvIQmPpobcHcOb2e4PW0d5sVTfUwxnKgHyyeT5orwu3jcpegmV9s7DD3Yk9Jph39m9VAy+05Yf/lOgTvT7TNSGakBETxEDR5l8q9nI20FCl18k8jFIM7XprcF6tAIiLs+Abwf6WsWUJLvlPkVyABJD9wCpIG44z9tNaHyRT+TFdyZ7VnYBQKoNkH5pm0guMfNxQnCXxG6C//SXMU7Vh0XLHgN/9tkHt5wWIxyTVSmcos4RFRuQMD23UTc8IYysBayzJtXXapwMWyPY/Ki20Ac4vxiLk=
   file: dist.zip
   on:
-    repo: QingdaoU/OnlineJudgeFE
+    repo: yuanmabiji/OnlineJudgeFE
     all_branches: true
     tags: true
