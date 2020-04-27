@@ -1,10 +1,10 @@
 <template>
   <Panel shadow :padding="10">
-    <div slot="title">
-      {{'公告'}}
+    <div slot="title" class="announce-title">
+      {{title}}
     </div>
     <div slot="extra">
-      <Button v-if="listVisible" type="info" @click="init" :loading="btnLoading">{{$t('m.Refresh')}}</Button>
+      <Button v-if="listVisible" type="primary" @click="init" :loading="btnLoading">{{$t('m.Refresh')}}</Button>
       <Button v-else type="ghost" icon="ios-undo" @click="goBack">{{$t('m.Back')}}</Button>
     </div>
 
@@ -19,7 +19,6 @@
               <div class="title"><a class="entry" @click="goAnnouncement(announcement)">
                 {{announcement.title}}</a></div>
               <div class="date">{{announcement.create_time | localtime }}</div>
-              <div class="creator"> By {{announcement.created_by.username}}</div>
             </div>
           </li>
         </ul>
@@ -49,7 +48,7 @@
     },
     data () {
       return {
-        limit: 10,
+        limit: 4,
         total: 10,
         btnLoading: false,
         announcements: [],
@@ -69,12 +68,9 @@
         }
       },
       getAnnouncementList (page = 1) {
-        let params = {
-          limit: this.limit,
-          offset: (page - 1) * this.limit
-        }
+        let offset = (page - 1) * this.limit
         this.btnLoading = true
-        api.getAnnouncementList(params).then(res => {
+        api.getAnnouncementList(offset, this.limit).then(res => {
           this.btnLoading = false
           this.announcements = res.data.data.results
           this.total = res.data.data.total
@@ -116,15 +112,19 @@
 </script>
 
 <style scoped lang="less">
+  .announce-title{
+      width: 80%;
+  }
   .announcements-container {
     margin-top: -10px;
     margin-bottom: 10px;
     li {
-      padding-top: 15px;
+      padding-top: 8px;
       list-style: none;
-      padding-bottom: 15px;
+      padding-bottom: 8px;
       margin-left: 20px;
-      font-size: 16px;
+      font-size: 15px;
+      color: #111;
       border-bottom: 1px solid rgba(187, 187, 187, 0.5);
       &:last-child {
         border-bottom: none;
@@ -134,18 +134,18 @@
           flex: 1 1;
           text-align: left;
           padding-left: 10px;
+          color: #495060;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
           a.entry {
-            color: #495060;
+            width: 40px;
+            color: #111;
             &:hover {
               color: #2d8cf0;
               border-bottom: 1px solid #2d8cf0;
             }
           }
-        }
-        .creator {
-          flex: none;
-          width: 200px;
-          text-align: center;
         }
         .date {
           flex: none;
@@ -158,6 +158,8 @@
 
   .content-container {
     padding: 0 20px 20px 20px;
+    height: 200px;
+    overflow: auto;
   }
 
   .no-announcement {

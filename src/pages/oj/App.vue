@@ -8,7 +8,7 @@
       <div class="footer">
         <p><a href="http://10.233.86.101/about">关于云台</a> | <a href="http://10.233.86.101/FAQ">联系我们 020-31362346</a></p>
         <p>  </p>
-        <p>Powered by <font color="#FF0000">经营分析</font></a> </p>
+        <p>Powered by <font color="#FF0000">基础应用</font></a> </p>
         <p>  <span v-if="version">&nbsp; Version: {{ version }}</span>
         </p>
       </div>
