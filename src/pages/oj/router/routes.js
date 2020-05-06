@@ -14,13 +14,20 @@ import {
   ResetPassword,
   SubmissionDetails,
   SubmissionList,
-  UserHome
+  UserHome,
+  Quick
 } from '../views'
 
 import * as Contest from '@oj/views/contest'
 import * as Setting from '@oj/views/setting'
 
 export default [
+  {
+    name: 'quick',
+    path: '/quick',
+    meta: {title: 'Quick'},
+    component: Quick
+  },
   {
     name: 'home',
     path: '/',
@@ -47,7 +54,7 @@ export default [
   },
   {
     name: 'problem-list',
-    path: '/problems',
+    path: '/problem',
     meta: {title: 'Problem List'},
     component: ProblemList
   },
@@ -71,7 +78,7 @@ export default [
   },
   {
     name: 'contest-list',
-    path: '/contests',
+    path: '/contest',
     meta: {title: 'Contest List'},
     component: Contest.ContestList
   },
