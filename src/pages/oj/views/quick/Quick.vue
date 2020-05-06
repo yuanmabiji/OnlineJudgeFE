@@ -1,6 +1,6 @@
 <template>
   <panel>
-    <h1 align="center">准备作答编程题 <a href='http://localhost:8080/contest'>立即跳转</a></h1>
+    <h1 align="center">准备作答编程题 <a href='http://10.233.86.101:80/contests'>立即跳转</a></h1>
   </panel>
 </template>
 
