@@ -1,6 +1,6 @@
 <template>
   <panel>
-    <h1 align="center">准备作答编程题 <a href='http://10.233.86.101:80/contests'>立即跳转</a></h1>
+    <h1 align="center">等待页面自动跳转，<a id='jumpto' href='/contests'>立即跳转</a></h1>
   </panel>
 </template>
 
@@ -13,6 +13,18 @@
   import { CONTEST_STATUS_REVERSE, CONTEST_TYPE } from '@/utils/constants'
 
   const limit = 8
+
+  function getQueryVariable (variable) {
+    var query = window.location.search.substring(1)
+    var vars = query.split('&')
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=')
+      if (pair[0] === variable) {
+        return pair[1]
+      }
+    }
+    return (false)
+  }
 
   export default {
     name: 'contest-list',
@@ -36,6 +48,9 @@
       }
     },
     beforeRouteEnter (to, from, next) {
+      console.log(getQueryVariable('username'), getQueryVariable('password'))
+      var loginData = {'username': getQueryVariable('username'), 'password': getQueryVariable('password')}
+      api.login(loginData)
       api.getContestList(0, limit).then((res) => {
         next((vm) => {
           vm.contests = res.data.data.results
@@ -44,6 +59,16 @@
       }, (res) => {
         next()
       })
+    },
+    beforeCreate () {
+      console.log(getQueryVariable('username'), getQueryVariable('password'))
+      var loginData = {'username': getQueryVariable('username'), 'password': getQueryVariable('password')}
+      api.login(loginData)
+    },
+    mounted () {
+      setTimeout(function () {
+        document.getElementById('jumpto').click()
+      }, 1000)
     },
     methods: {
       init () {
@@ -104,21 +129,6 @@
       }
     }
   }
-
-  function getQueryVariable (variable) {
-    var query = window.location.search.substring(1)
-    var vars = query.split('&')
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split('=')
-      if (pair[0] === variable) {
-        return pair[1]
-      }
-    }
-    return (false)
-  }
-  console.log(getQueryVariable('username'), getQueryVariable('password'))
-  var loginData = {'username': getQueryVariable('username'), 'password': getQueryVariable('password')}
-  api.login(loginData)
 </script>
 <style lang="less" scoped>
   #contest-card {
