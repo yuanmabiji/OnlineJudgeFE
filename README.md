@@ -43,3 +43,19 @@ docker tag 06ec1f1c9dc4 oj-backend:v16 //打标签
 项目信息：
 前端：E:\kaoshi\newfe\OnlineJudgeFE
 后端：E:\kaoshi\OnlineJudge
+
+
+9，拿到镜像后部署oj后端项目
+1）首先将docker镜像打包成tar包，最后一个是镜像ID
+docker save -o oj-backend_v21.tar 3f3c15a42091
+2）然后将制作的镜像tar包放到另一个服务器，将镜像加载出来
+docker load -i oj-backend_v21.tar
+3）为刚刚加载出来的镜像打tag
+docker tag 06ec1f1c9dc4 oj-backend:v16 //打标签
+4）停止和删除容器
+docker stop oj-backend
+docker rm oj-backend
+5）重新部署修改并构建后的镜像，注意替换后面的版本号
+docker run  -it --network=onlinejudgedeploy_default -d -p 0.0.0.0:80:8000 -p 0.0.0.0:443:1443 --restart="always"  -e POSTGRES_DB=onlinejudge -e POSTGRES_USER=onlinejudge -e POSTGRES_PASSWORD=onlinejudge -e JUDGE_SERVER_TOKEN=CHANGE_THIS -v /usr/software_packages/OnlineJudgeDeploy/data/backend:/data --name oj-backend oj-backend:v3
+
+注意替换版本号
